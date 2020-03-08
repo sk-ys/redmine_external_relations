@@ -1,0 +1,27 @@
+# Japanese strings go here for Rails i18n
+ja:
+  label_title_ex_rels: 拡張リンクリスト
+  label_title_ex_rels_issue_from: リンク元
+  label_title_ex_rels_issue_to: リンク先
+  label_title_ex_rels_app: 拡張リンク用Appリスト
+  label_new_app: 新しいApp
+  label_add_item_to: 新しいリンク先の追加
+  label_add_item_from: 新しいリンク元の追加
+  label_fetch: 取得
+  message_confirm_add_link: リンクを追加しますか？
+  message_error_add_link: リンクの追加に失敗しました。
+  message_confirm_break_link: リンクを解除しますか？
+  message_error_break_link: リンクを解除に失敗しました。
+  message_error_retrieve_data: 外部のAppからデータを取得できませんでした。
+  message_done_ratio_is_not_updated: 進捗率は更新されません。
+  message_update_completed: アップデートが完了しました。
+  message_update_failed: アップデートが正常に完了しませんでした。
+  label_app_name: "App名"
+  label_issue_id: "チケット #"
+  label_link_break: "リンクの解除"
+  label_update_manually: 手動更新
+  activerecord:
+    attributes:
+      external_relation:
+        issue_to_id: "リンク先チケットID"
+        issue_to_app_id: "リンク先App"

@@ -1,0 +1,13 @@
+<div class="contextual">
+	<%= link_to(l(:label_relation_new),
+		{action: 'new'},
+		 class: 'icon icon-add') %>
+</div>
+
+<%= title [l(:label_title_ex_rels), { controller: 'external_relations', action: 'show'}], l(:label_title_ex_rels) %>
+
+<% if (@ex_rels.blank?) %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% else %>
+  <%= render :partial => 'external_relation_items/table', :locals => { ex_rels: @ex_rels } %>
+<% end %>

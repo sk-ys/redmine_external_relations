@@ -1,0 +1,10 @@
+<%= form_for(ExternalRelation.new,
+  as: "ex_rel_#{data_type}",
+  url: { controller: 'external_relation_items', action: 'create' },
+  html: { multipart: true, remote: true, id: "ex_rel_#{data_type}-form", style: 'display: none;', method: :post }
+  ) do |f| %>
+  <%= render partial: 'issues/exrels_form_core', locals: { form: f, issue_id: issue_id, data_type: data_type }%>
+  <%= submit_tag l(:button_add) %>
+  <%= link_to_function l(:button_cancel), "$('#ex_rel_#{data_type}-form').hide()"%>
+<% end %>
+<%= javascript_include_tag 'form_issues.js', plugin: 'external_relations' %>

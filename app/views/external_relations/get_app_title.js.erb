@@ -1,0 +1,15 @@
+var get_app_title = function(app_name) {
+    if (app_name == "local") {
+        app_name = ExRels.settings.app_name;
+    }
+    $.ajax({
+        type: 'GET',
+        url: '/' + app_name
+    }).done(function(data) {
+        $("#ex_rel_app_app_title").val($('#header h1', $(data)).first().text());
+    }).fail(function() {
+        alert('<%= l(:message_error_retrieve_data) %>');
+    });
+}
+
+get_app_title($("#ex_rel_app_app_name").val());

@@ -1,0 +1,30 @@
+<% if @project.module_enabled?(:external_relations) && User.current.allowed_to?(:view_ex_rels, @project) %>
+  <hr>
+
+  <p>
+    <strong><%=l(:label_title_ex_rels)%></strong>
+    <%= link_to_if_authorized "",
+      { controller: 'external_relations', action: 'update_issue', issue_id: @issue.id, data_type: 'to' },
+      method: :patch, remote: true, class: 'icon icon-reload',
+      title: l(:label_update_manually) %>
+  </p>
+
+  <div class="contextual">
+    <% if User.current.allowed_to?(:create_ex_rels, @project) %>
+      <%= toggle_link l(:label_add_item_from), 'ex_rel_from-form', {:focus => 'ex_rel_from_issue_from_id'} %>
+    <% end %>
+  </div>
+
+  <div id="external_relations_issue">
+    <%= render_tabs exrels_tabs %>
+
+    <div id="external_relations_issue_from_form_outer">
+      <%= render partial: 'issues/exrels_form', locals: { issue_id: @issue.id, data_type: "from" } %>
+    </div>
+  </div>
+
+  <% content_for :header_tags do %>
+    <%= javascript_include_tag 'update_table.js', plugin: 'external_relations' %>
+    <%= stylesheet_link_tag 'issue_external_relations.css', plugin: 'external_relations' %>
+  <% end %>
+<% end %>

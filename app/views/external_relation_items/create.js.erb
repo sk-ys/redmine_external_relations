@@ -1,0 +1,30 @@
+var update_done_ratio = function(){
+  var progress_div = $("#content div.issue div.attributes div.progress:first");
+  var done_ratio = <%= Issue.find_by_id(@issue_id).done_ratio rescue nil %>;
+  if (done_ratio) {
+    done_ratio = parseInt(done_ratio, 10);
+    progress_div.find('table.progress:first').attr('class', 'progress progress-' + done_ratio);
+    progress_div.find('table.progress:first tr:first').html(
+      '<td style="width: ' + done_ratio + '%;" class="closed" title="' + done_ratio + '%"></td>' +
+      '<td style="width: ' + (100 - done_ratio) + '%;" class="todo"></td>'
+    );
+    progress_div.find('p.percent:first').html(done_ratio + '%');
+  }
+}
+
+<% if @errors.empty? %>
+  <% unless @data_type.nil? %>
+    $("#external_relations_issue_<%= @data_type %>_table_outer")
+    .html("<%= escape_javascript(render partial: 'issues/exrels_table', locals: { issue_id: @issue_id, ex_rels: @ex_rels, data_type: @data_type }) %>");
+    ExRels['get_data_<%= @data_type %>'];
+    <% if @data_type == "from" %>
+      update_done_ratio();
+      $("#external_relations_issue_<%= @data_type %>_form_outer")
+      .html("<%= escape_javascript(render partial: 'issues/exrels_form', locals: { issue_id: @issue_id, data_type: @data_type }) %>");
+    <% end %>
+  <% end %>
+  $('#ex_rel_<%= @data_type %>_issue_<%= @data_type %>_id').val('');
+  $('#ex_rel_<%= @data_type %>-form').hide();
+<% else %>
+  alert("<%= l(:message_error_add_link) %>")
+<% end %>

@@ -1,0 +1,4 @@
+<% ex_rels_from = ExternalRelation.where("issue_to_id=#{@issue.id} and issue_to_app_id=1") %>
+<div id="external_relations_issue_from_table_outer">
+  <%= render partial: 'issues/exrels_table', locals: { issue_id: @issue.id, ex_rels: ex_rels_from, data_type: "from" } %>
+</div>

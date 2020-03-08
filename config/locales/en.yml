@@ -1,0 +1,27 @@
+# English strings go here for Rails i18n
+en:
+  label_title_ex_rels: External Relation List
+  label_title_ex_rels_issue_from: Related issues from
+  label_title_ex_rels_issue_to: Related issues to
+  label_title_ex_rels_app: App List for External Relation
+  label_new_app: New App
+  label_add_item_to: Add to-link
+  label_add_item_from: Add from-link
+  label_fetch: fetch
+  message_confirm_add_link: Add link?
+  message_error_add_link: Failed to add link
+  message_confirm_break_link: Break link?
+  message_error_break_link: Failed to break link
+  message_error_retrieve_data: Could not retrieve data from other apps.
+  message_done_ratio_is_not_updated: The done ratio is not updated.
+  message_update_completed: Update completed.
+  message_update_failed: Update did not complete successfully.
+  label_app_name: "App Name"
+  label_issue_id: "Issue #"
+  label_link_break: "Break link"
+  label_update_manually: update manually
+  activerecord:
+    attributes:
+      external_relation:
+        issue_to_id: Issue to ID
+        issue_to_app_id: Issue to App ID

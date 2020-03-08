@@ -1,0 +1,31 @@
+<% if data_type == "from" %>
+  <%= form.hidden_field :issue_to_id, value: issue_id %>
+  <%= form.hidden_field :issue_to_app_id, value: 1 %>
+
+  <%= form.label l(:label_issue_id) %>:
+  <%#= form.number_field :issue_from_id, min: 1, step: 1, style: "width: 10em;"  %>
+  <%= form.text_field :issue_from_id, style: "width: 10em;"  %>
+
+  <%= form.label l(:label_app_name) %>:
+  <%= form.select(
+    :issue_from_app_id,
+    ExternalRelationApp.all.map {
+      |ex_rel_apps| [ex_rel_apps.app_title, ex_rel_apps.id]
+    }
+  ) %>
+<% elsif data_type == "to" %>
+  <%= form.hidden_field :issue_from_id, value: issue_id %>
+  <%= form.hidden_field :issue_from_app_id, value: 1 %>
+
+  <%= form.label l(:label_issue_id) %>:
+  <%#= form.number_field :issue_to_id, min: 1, step: 1, style: "width: 10em;" %>
+  <%= form.text_field :issue_to_id, style: "width: 10em;" %>
+
+  <%= form.label l(:label_app_name) %>:
+  <%= form.select(
+    :issue_to_app_id,
+    ExternalRelationApp.all.map {
+      |ex_rel_apps| [ex_rel_apps.app_title, ex_rel_apps.id]
+    }
+  ) %>
+<% end %>

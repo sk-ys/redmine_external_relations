@@ -1,0 +1,20 @@
+<% if (ex_rel_apps.blank?) %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% else %>
+  <table class="list">
+    <thead><tr>
+      <th>#</th>
+      <th>app name</th>
+      <th>app title</th>
+    </tr></thead>
+    <tbody>
+      <% ex_rel_apps.each do |ex_rel_app| %>
+        <tr class="<%= cycle('odd', 'even') %>">
+          <td><%= link_to(ex_rel_app.id, {controller: 'external_relation_apps', action: 'show', id: ex_rel_app.id}) %></td>
+          <td><%= ex_rel_app.app_name %></td>
+          <td><%= ex_rel_app.app_title %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

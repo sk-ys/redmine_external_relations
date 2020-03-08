@@ -1,0 +1,18 @@
+<div class="contextual">
+  <%= link_to(l(:button_list),
+    { controller: 'external_relations', action: 'show' },
+    class: 'icon icon-list') %>
+  <%= link_to(l(:button_delete),
+    {action: 'destroy', id: @ex_rel.id},
+    method: :delete,
+    data: { confirm: l(:text_are_you_sure) },
+    class: 'icon icon-del') %>
+</div>
+
+<%= title [l(:label_title_ex_rels), { controller: 'external_relations', action: 'show'}], @ex_rel.id %>
+
+<%= labelled_form_for :ex_rel, @ex_rel,
+  url: { action: 'update' }, html: { multipart: true, id: 'ex_rels-form', method: :patch } do |f| %>
+  <%= render partial: 'form', locals: { form: f } %>
+  <%= submit_tag l(:button_update) %>
+<% end %>

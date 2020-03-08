@@ -1,0 +1,14 @@
+<%= title [l(:label_title_ex_rels_app), { controller: 'external_relations', action: 'show'}], l(:label_title_ex_rels_app) %>
+
+<div id="ex_rel_apps_table_outer">
+  <%= render :partial => 'external_relation_apps/table', :locals => { ex_rel_apps: @ex_rel_apps } %>
+</div>
+
+<%= labelled_form_for :ex_rel_app, @ex_rel_app,
+  url: { controller: 'external_relation_apps', action: 'create' },
+  html: { multipart: true, id: 'external_relation_apps-form', remote: true } do |f| %>
+  <%= back_url_hidden_field_tag %>
+  <%= f.text_field :app_name %>
+  <%= f.text_field :app_title %>
+  <%= f.submit l(:button_add) %>
+<% end %>

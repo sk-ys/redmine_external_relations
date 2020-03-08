@@ -1,0 +1,13 @@
+<%= title [l(:label_title_ex_rels), { controller: 'external_relations', action: 'show'}], @ex_rel_app.app_name %>
+
+<%= labelled_form_for :ex_rel_app, @ex_rel_app,
+  url: { controller: 'external_relation_apps', action: 'update' },
+  html: { multipart: true, id: 'external_relation_apps-form', method: :patch } do |f| %>
+  <%#= back_url_hidden_field_tag %>
+  <%= f.text_field :app_name %>
+  <%= f.text_field :app_title %>
+  <%= link_to l(:label_fetch),
+    { controller: 'external_relations', action: 'get_app_title'},
+    :remote => true, :class => 'icon icon-reload' %>
+  <%= f.submit l(:button_update) %>
+<% end %>

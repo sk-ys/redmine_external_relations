@@ -1,0 +1,22 @@
+<%= error_messages_for 'ex_rels' %>
+
+<div class="box">
+  <p><%= form.number_field :issue_from_id %></p>
+  <p><%= form.number_field :issue_to_id %></p>
+  <p>
+    <%= form.select(
+      :issue_from_app_id,
+      ExternalRelationApp.all.map {
+        |ex_rel_apps| [ex_rel_apps.app_title, ex_rel_apps.id]
+      }
+    ) %>
+  </p>
+  <p>
+    <%= form.select(
+      :issue_to_app_id,
+      ExternalRelationApp.all.map {
+        |ex_rel_apps| [ex_rel_apps.app_title, ex_rel_apps.id]
+      }
+    ) %>
+  </p>
+</div>

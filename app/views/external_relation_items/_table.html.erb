@@ -1,0 +1,26 @@
+<table class="list">
+  <thead><tr>
+    <th>#</th>
+    <th>issue from id</th>
+    <th>issue from app name</th>
+    <th>issue to id</th>
+    <th>issue to app name</th>
+  </tr></thead>
+  <tbody>
+    <% ex_rels.each do |ex_rel| %>
+      <% issue_from_app_name = app_id_to_name(ex_rel.issue_from_app_id) %>
+      <% issue_to_app_name = app_id_to_name(ex_rel.issue_to_app_id) %>
+      <tr class="<%= cycle('odd', 'even') %>">
+        <td><%= link_to(ex_rel.id, {controller: 'external_relation_items', action: 'show', id: ex_rel.id}) %></td>
+        <td>
+          <%= link_to(ex_rel.issue_from_id, "/#{issue_from_app_name}/issues/#{ex_rel.issue_from_id}") %>
+        </td>
+        <td><%= issue_from_app_name %></td>
+        <td>
+            <%= link_to(ex_rel.issue_to_id, "/#{issue_to_app_name}/issues/#{ex_rel.issue_to_id}") %>
+        </td>
+        <td><%= issue_to_app_name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

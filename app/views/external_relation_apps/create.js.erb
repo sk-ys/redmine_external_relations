@@ -1,0 +1,7 @@
+$("#ex_rel_apps_table_outer").html("<%= escape_javascript(render partial: 'external_relation_apps/table', locals: {ex_rel_apps: @ex_rel_apps}) %>");
+<% if @ex_rel_app.errors.empty? %>
+  $('#ex_rel_app_app_name').val('');
+  $('#ex_rel_app_app_title').val('');
+<% else %>
+  alert("Failed to add or to update the value.")
+<% end %>

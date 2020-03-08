@@ -1,0 +1,105 @@
+<% app_name = relative_app_name() %>
+<% app_title = app_id_to_title(1) %>
+<% allowed_to = User.current.allowed_to?(:manage_ex_rels, @project) %>
+
+<%
+# permit ex_rels
+if defined?(ex_rels) && ex_rels.present?
+  ex_rels = active_record_to_array_hash(ex_rels, symbolize: true)
+else
+  ex_rels = []
+end
+%>
+
+<%
+# get table from another app
+if data_type == "to"
+  table_another = get_table_from_another_apps({issue_from_id: issue_id, issue_from_app_name: app_name}, symbolize: true)
+  if check_table(table_another)
+    ex_rels = merge_another_table_hash(ex_rels, table_another)
+  else
+%>
+<%= javascript_tag "$(function(){alert('#{l(:message_error_retrieve_data)}')});" %>
+<%
+  end
+end
+%>
+
+<% if defined?(ex_rels) && ex_rels.present? %>
+    <table class="list">
+<% else %>
+    <table class="list" style="display:none;">
+<% end %>
+
+<tbody>
+    <% if defined?(ex_rels) && ex_rels.present? %>
+        <% ex_rels.each do |ex_rel| %>
+            <% class_str = "#{cycle('odd', 'even')}" %>
+            <% data_attr = 'data-exrels_id=' + ex_rel[:id].to_s + '' %>
+            <% data_attr += ' data-issue_from_id=' + ex_rel[:issue_from_id].to_s + '' %>
+            <% data_attr += ' data-issue_to_id=' + ex_rel[:issue_to_id].to_s + '' %>
+            <% data_attr += ' data-issue_from_app_id=' + ex_rel[:issue_from_app_id].to_s + '' %>
+            <% data_attr += ' data-issue_to_app_id=' + ex_rel[:issue_to_app_id].to_s + '' %>
+            <% if data_type == "from" %>
+                <% flg_external = ex_rel[:issue_from_app_id] != 1 %>
+            <% else %>
+                <% flg_external = ex_rel[:issue_to_app_id] != 1 %>
+            <% end %>
+            <% if !flg_external %>
+                <% if data_type == "from"  %>
+                    <% issue = Issue.find_by_id(ex_rel[:issue_from_id]) %>
+                <% else %>
+                    <% issue = Issue.find_by_id(ex_rel[:issue_to_id]) %>
+                <% end %>
+                <% if issue.present? %>
+                    <tr class="<%= class_str %> <%= issue.css_classes %>" <%= data_attr %>>
+                        <td class="subject">
+                            <%= "#{app_title} " %><%= link_to "##{issue.id}", "/#{app_name}/issues/#{issue.id}" %><%= ": #{issue.subject}" %>
+                        </td>
+                        <td class="status"><%= issue.status %></td>
+                        <td class="start_date"><%= format_date(issue.start_date) %></td>
+                        <td class="due_date"><%= format_date(issue.due_date) %></td>
+                        <td class="done_ratio" style="width:30px;"><%= progress_bar(issue.done_ratio) %></td>
+                        <% if data_type == "from" && allowed_to %>
+                            <td class="buttons">
+                                <% if true %>
+                                    <a title="<%= l(:label_link_break) %>" class="icon-only icon-link-break" href="javascript:void(0)"><%= l(:label_link_break) %></a>
+                                <% end %>
+                                <%#= link_to_break(ex_rel, data_type) %>
+                            </td>
+                        <% end %>
+                    </tr>
+                <% else %>
+                    <tr class="<%= class_str %>">
+                        <% if data_type == "from" && allowed_to %>
+                            <td colspan=6>--- error ---</td>
+                        <% else %>
+                            <td colspan=5>--- error ---</td>
+                        <% end %>
+                    </tr>
+                <% end %>
+            <% else %>
+                <tr class="<%= class_str %>" <%= data_attr %>>
+                    <td class="subject"></td>
+                    <td class="status"></td>
+                    <td class="start_date"></td>
+                    <td class="due_date"></td>
+                    <td class="done_ratio" style="width:30px;"><%= progress_bar(0) %></td>
+                    <% if data_type == "from" && allowed_to %>
+                      <td class="buttons">
+                        <% if true %>
+                            <a title="<%= l(:label_link_break) %>" class="icon-only icon-link-break" href="javascript:void(0)"><%= l(:label_link_break) %></a>
+                        <% end %>
+                        <%#= link_to_break(ex_rel, data_type) %>
+                      </td>
+                    <% end %>
+                </tr>
+            <% end %>
+        <% end %>
+    <% end %>
+</tbody>
+</table>
+
+<%= javascript_tag "$(function(){ExRels['get_data_#{data_type}']();});" %>
+
+
