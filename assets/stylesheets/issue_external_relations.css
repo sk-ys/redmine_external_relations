@@ -16,3 +16,12 @@
     background-repeat: no-repeat;
     padding-left: 25px !important;
  }
+
+ /* power tip */
+ #poserTip {
+   width: 60em;
+   max-width: 70%;
+   max-width: 30em;
+   overflow: auto;
+   white-space: normal;
+ }

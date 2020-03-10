@@ -1,7 +1,11 @@
 $(function () {
     let get_app_name_by_id = function (id){
-        let exrels_app = ExRels.settings.external_app_names.filter(function (item) {return item.id == id})[0];
-        return exrels_app.app_name;
+        if (id == 1){
+            return ExRels.settings.app_name;
+        } else {
+            let exrels_app = ExRels.settings.external_app_names.filter(function (item) {return item.id == id})[0];
+            return exrels_app.app_name;
+        }
     }
 
     let get_app_title_by_id = function (id){
@@ -89,4 +93,46 @@ $(function () {
 
     ExRels['get_data_from'] = get_data_from;
     ExRels['get_data_to'] = get_data_to;
+
+    // ----
+    // tooltip by powertip https://stevenbenner.github.io/jquery-powertip/
+    let getIssueDescription = function(path, callback) {
+        $.get(path).done(function(data){
+            var content = $('#content div.description > div.wiki', $(data)).first().html();
+            callback(content);
+        });
+    }
+
+    let setTooltip = function(elem_a, to_from){
+        elem_a = $(elem_a);
+        path = elem_a.attr("href");
+        
+        if (elem_a.data('powertipjq') === undefined) {
+            var setTooltipData = function(tipContent){
+                elem_a.data('powertipjq', $(tipContent));
+                elem_a.powerTip({
+                    placement: 'se',
+                    mouseOnToPopup: true
+                });
+                elem_a.powerTip('show');
+            }
+            getIssueDescription(path, setTooltipData);
+        }
+    }
+
+    $(document).on(
+        "mouseover",
+        "#external_relations_issue_to_table_outer>table.list>tbody>tr>td.subject>a",
+        function(){
+            setTooltip(this, 'to');
+        }
+    );
+
+    $(document).on(
+        "mouseover",
+        "#external_relations_issue_from_table_outer>table.list>tbody>tr>td.subject>a",
+        function(){
+            setTooltip(this, 'from');
+        }
+    );
 });
