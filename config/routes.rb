@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :apps, controller: :external_relation_apps
     resources :items, except: [:edit], controller: :external_relation_items
     patch "/redraw_table", to: "external_relation_items#redraw_table", constraints: {format: /js/}
+    get "/issue", to: "external_relations#check_issue"
     patch "/issue", to: "external_relations#update_issue"
     delete "/issue", to: "external_relations#delete_issue"
     get "/issue_done_ratios", to: "external_relations#get_issue_done_ratios"

@@ -30,7 +30,7 @@ class ExternalRelationItemsController < ApplicationController
   end
 
   def create
-    if check_circular_dependency(@params_ex_rel)
+    if !addable?(@params_ex_rel) || check_circular_dependency(@params_ex_rel)
       saved = false
       @ex_rel = ExternalRelation.new()
       @ex_rel.errors.add :base, :taken
@@ -242,6 +242,24 @@ private
         :issue_to_id, :issue_to_app_id
         ])
     end
+  end
+
+  def addable?(params)
+    # check to
+    ret = issue_addable?(
+      app_id_to_name(params[:issue_to_app_id].to_i),
+      params[:issue_to_id].to_i,
+      User.current.login.to_s
+    )
+    return false unless ret
+
+    # check from
+    ret = issue_addable?(
+      app_id_to_name(params[:issue_from_app_id].to_i),
+      params[:issue_from_id].to_i,
+      User.current.login.to_s
+    )
+    return ret
   end
 
   def check_circular_dependency(params)
