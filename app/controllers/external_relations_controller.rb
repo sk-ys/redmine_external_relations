@@ -17,7 +17,6 @@ class ExternalRelationsController < ApplicationController
   def update_issue
     params.require([:issue_id])
     issue_id = params[:issue_id]
-    issue_id = 1 if issue_id.nil?
     issue = Issue.find_by(id: issue_id)
 
     status = false
