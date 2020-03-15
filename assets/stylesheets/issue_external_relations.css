@@ -1,18 +1,26 @@
 #external_relations_issue div.tabs {
-    margin-bottom: 0;
- }
+  margin-bottom: 0;
+}
 
- /* set icon */
- #tab-link_to {
-    background-image: url(../images/iconmonstr-download-6-16_Blue-300.png);
-    background-position: 5% 50%;
-    background-repeat: no-repeat;
-    padding-left: 25px !important;
- }
+/* set icon */
+#tab-link_to {
+  background-image: url(../images/iconmonstr-download-6-16_Blue-300.png);
+  background-position: 5% 50%;
+  background-repeat: no-repeat;
+  padding-left: 25px !important;
+}
+#tab-link_from {
+  background-image: url(../images/iconmonstr-upload-6-16_Green-300.png);
+  background-position: 5% 50%;
+  background-repeat: no-repeat;
+  padding-left: 25px !important;
+}
 
- #tab-link_from {
-    background-image: url(../images/iconmonstr-upload-6-16_Green-300.png);
-    background-position: 5% 50%;
-    background-repeat: no-repeat;
-    padding-left: 25px !important;
- }
+/* power tip */
+#poserTip {
+  width: 60em;
+  max-width: 70%;
+  max-width: 30em;
+  overflow: auto;
+  white-space: normal;
+}
