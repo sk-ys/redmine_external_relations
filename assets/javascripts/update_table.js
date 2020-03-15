@@ -27,9 +27,23 @@ $(function () {
         });
     }
 
-    let get_data_from = function() {get_data('from')}
+    let show_tab = function (to_from){
+        if ($('#external_relations_issue_' + to_from + '_table_outer table tbody tr').length > 0) {
+            $('#tab-link_' + to_from).first().show();
+        } else {
+            $('#tab-link_' + to_from).first().hide();
+        }
+    }
 
-    let get_data_to = function() {get_data('to')}
+    let get_data_from = function() {
+        get_data('from');
+        show_tab('from');
+    }
+
+    let get_data_to = function() {
+        get_data('to');
+        show_tab('to');
+    }
 
     let progress_bar_html = function (progress) {
         let html = '<table class="progress progress-' + progress + '">'
