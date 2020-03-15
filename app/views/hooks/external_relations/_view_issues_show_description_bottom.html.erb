@@ -1,6 +1,12 @@
 <% if @project.module_enabled?(:external_relations) && User.current.allowed_to?(:view_ex_rels, @project) %>
   <hr>
 
+  <div class="contextual">
+    <% if User.current.allowed_to?(:create_ex_rels, @project) %>
+      <%= toggle_link l(:label_add_item_from), 'ex_rel_from-form', {:focus => 'ex_rel_from_issue_from_id'} %>
+    <% end %>
+  </div>
+
   <p>
     <strong><%=l(:label_title_ex_rels)%></strong>
     <%= link_to_if_authorized "",
@@ -8,12 +14,6 @@
       method: :patch, remote: true, class: 'icon icon-reload',
       title: l(:label_update_manually) %>
   </p>
-
-  <div class="contextual">
-    <% if User.current.allowed_to?(:create_ex_rels, @project) %>
-      <%= toggle_link l(:label_add_item_from), 'ex_rel_from-form', {:focus => 'ex_rel_from_issue_from_id'} %>
-    <% end %>
-  </div>
 
   <div id="external_relations_issue">
     <%= render_tabs exrels_tabs %>
