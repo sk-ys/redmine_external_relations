@@ -1,4 +1,8 @@
 $(function () {
+    let rev_to_from = function (to_from){
+        return (to_from == "to" ? "from" : "to");
+    }
+
     let get_app_name_by_id = function (id){
         let exrels_app = ExRels.settings.external_app_names.filter(function (item) {return item.id == id})[0];
         return exrels_app.app_name;
@@ -30,8 +34,12 @@ $(function () {
     let show_tab = function (to_from){
         if ($('#external_relations_issue_' + to_from + '_table_outer table tbody tr').length > 0) {
             $('#tab-link_' + to_from).first().show();
+            $('#external_relations_issue>div.tabs').show();
         } else {
             $('#tab-link_' + to_from).first().hide();
+            if ($('#external_relations_issue_' + rev_to_from(to_from) + '_table_outer table tbody tr').length == 0){
+                $('#external_relations_issue>div.tabs').hide();
+            }
         }
     }
 
