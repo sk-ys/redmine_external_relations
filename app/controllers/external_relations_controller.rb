@@ -1,7 +1,7 @@
 class ExternalRelationsController < ApplicationController
   layout 'admin'
 
-  accept_api_auth :issue_done_ratios, :update_issue_done_ratios, :update_issue, :delete_issue, :get_app_title
+  accept_api_auth :issue_done_ratios, :update_issue_done_ratios, :check_issue, :update_issue, :delete_issue, :get_app_title
   before_action :require_admin, only: [:show]
 
   include ExternalRelationItemsHelper
@@ -14,10 +14,24 @@ class ExternalRelationsController < ApplicationController
     @ex_rels = ExternalRelation.all()
   end
 
+  def check_issue
+    params.require([:issue_id, :user_login])
+    addable = issue_addable?(relative_app_name(), params[:issue_id], params[:user_login])
+
+    respond_to do |format|
+      format.api {
+        if addable
+          head :ok
+        else
+          head :bad_request
+        end
+      }
+    end
+  end
+
   def update_issue
     params.require([:issue_id])
     issue_id = params[:issue_id]
-    issue_id = 1 if issue_id.nil?
     issue = Issue.find_by(id: issue_id)
 
     status = false

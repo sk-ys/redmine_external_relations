@@ -64,4 +64,28 @@ module ExternalRelationsHelper
 
     logger.info("#{Time.now} -- end -- call_update_issue_done_ratios #{response.code}")
   end
+
+  def issue_addable?(app_name, issue_id, user_login, symbolize=true)
+    require 'json'
+    require 'net/http'
+    require 'uri'
+
+    if app_name == relative_app_name
+      issue = Issue.find_by(id: issue_id)
+      return false if issue.blank?
+
+      project = Project.find_by(id: issue.project_id)
+      user = User.find_by_login(user_login)
+      return false if user.nil?
+      return user.allowed_to?(:create_ex_rels, project)
+    else
+      uri = URI(
+        request.protocol + request.host +
+        "/#{app_name}" + "/external_relations/issue.json")
+      uri.query = {issue_id: issue_id, user_login: user_login}.to_param
+      response = Net::HTTP.get_response(uri)
+
+      return response.code == '200'
+    end
+  end
 end
