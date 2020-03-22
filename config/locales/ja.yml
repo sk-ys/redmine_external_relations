@@ -20,6 +20,9 @@ ja:
   label_issue_id: "チケット #"
   label_link_break: "リンクの解除"
   label_update_manually: 手動更新
+  field_external_relation: 拡張リンク
+  field_external_relation_to: 拡張リンク先
+  field_external_relation_from: 拡張リンク元
   activerecord:
     attributes:
       external_relation:

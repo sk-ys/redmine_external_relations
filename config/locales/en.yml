@@ -20,6 +20,9 @@ en:
   label_issue_id: "Issue #"
   label_link_break: "Break link"
   label_update_manually: update manually
+  field_external_relation: External Relation
+  field_external_relation_to: Related to external
+  field_external_relation_from: Related from external
   activerecord:
     attributes:
       external_relation:

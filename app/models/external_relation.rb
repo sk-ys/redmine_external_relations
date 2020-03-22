@@ -21,6 +21,9 @@ class ExternalRelation < ActiveRecord::Base
            "issue_to_app.app_name as issue_to_app_name")
   end
 
+  after_create  :call_issues_relation_added_callback
+  after_destroy :call_issues_relation_removed_callback
+
   def validate_issue_external_relation
     if issue_from_id && issue_to_id && issue_from_app_id && issue_to_app_id
       if issue_from_app_id == issue_to_app_id && issue_from_id == issue_to_id
@@ -69,4 +72,56 @@ class ExternalRelation < ActiveRecord::Base
 
     return false
   end
+
+  def to_s(direction = nil)
+    if direction.to_s == 'from'
+      "#{ExternalRelationApp.find_by_id(issue_from_app_id).app_title}##{issue_from_id}"
+    elsif direction.to_s == 'to'
+      "#{ExternalRelationApp.find_by_id(issue_to_app_id).app_title}##{issue_to_id}"
+    else
+      "from: #{to_s(:from)} -> to: #{to_s(:to)}"
+    end
+  end
+
+  def init_journal(user, notes = "")
+    issue_to = (issue_to_app_id == 1 ? Issue.find_by_id(issue_to_id) : nil)
+
+    if issue_to
+      @current_journal ||= Journal.new(:journalized => issue_to, :user => user, :notes => notes)
+
+      if new_record?
+        @current_journal.notify = false
+      end
+    else
+      @current_journal = nil
+    end
+
+    @current_journal
+  end
+
+  def call_issues_relation_added_callback
+    create_journal :relation_added
+  end
+
+  def call_issues_relation_removed_callback
+    create_journal :relation_removed
+  end
+
+  def create_journal(name)
+    if @current_journal
+
+      key = (name == :relation_removed ? :old_value : :value)
+
+      @current_journal.details << JournalDetail.new(
+        :property => 'attr',
+        :prop_key => 'external_relation',
+        key => to_s)
+
+      @current_journal.save
+
+      # reset current journal
+      init_journal @current_journal.user, @current_journal.notes
+    end
+  end
+
 end

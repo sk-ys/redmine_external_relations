@@ -36,6 +36,7 @@ class ExternalRelationItemsController < ApplicationController
       @ex_rel.errors.add :base, :taken
     else
       @ex_rel = ExternalRelation.new(@params_ex_rel)
+      @ex_rel.init_journal(User.current)
 
       begin
         saved = @ex_rel.save
@@ -159,6 +160,7 @@ class ExternalRelationItemsController < ApplicationController
     deleted = false
     project_to = find_project_by_issue_id(@ex_rel.issue_to_id)
     if project_to.present? && User.current.allowed_to?(:manage_ex_rels, project_to)
+      @ex_rel.init_journal(User.current)
       deleted = delete_item(@ex_rel)
     end
 
