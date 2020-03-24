@@ -122,7 +122,15 @@ class ExternalRelationsController < ApplicationController
   end
 
   def get_issue_done_ratios
-    done_ratios = Issue.where(id: params[:issue_ids]).pluck(:done_ratio)
+    done_ratios = []
+    issues = Issue.where(id: params[:issue_ids])
+    issues.each{ |issue|
+      # count issue done ratio except closed non-completed issue
+      unless issue.closed? && issue[:done_ratio] < 100
+        done_ratios.push(issue[:done_ratio])
+      end
+    }
+
     respond_to do |format|
       format.api {
         render json: done_ratios
